@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>MapMe | Madison Community Reporting</title>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://js.arcgis.com/4.26/"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="seal">M</div>
+      <div>
+        <h1>MapMe</h1>
+        <p>Madison Community Reporting</p>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="dashboardBtn">Dispatcher</button>
+      <button id="menuBtn">☰</button>
+    </div>
+  </header>
+
+  <main class="app-layout">
+    <section class="map-section">
+      <div class="search-row">
+        <input type="text" placeholder="Search location..." />
+        <button>Filters</button>
+      </div>
+
+      <div id="viewDiv"></div>
+
+      <div class="legend">
+        <span><i class="dot open"></i> Open</span>
+        <span><i class="dot review"></i> Under Review</span>
+        <span><i class="dot scheduled"></i> Scheduled</span>
+        <span><i class="dot resolved"></i> Resolved</span>
+      </div>
+
+      <button id="mobileReportBtn" class="floating-report">+ Report an Issue</button>
+    </section>
+
+    <aside class="report-panel">
+      <h2>Submit a Report</h2>
+
+      <label>Category</label>
+      <select id="category">
+        <option value="">-- Select Category --</option>
+        <option>Pothole</option>
+        <option>Damaged Street Sign</option>
+        <option>Overflowing Trash</option>
+        <option>Sidewalk Damage</option>
+        <option>Street Light Issue</option>
+        <option>Park Maintenance</option>
+      </select>
+
+      <label>Description</label>
+      <textarea id="description" placeholder="Describe the issue..."></textarea>
+
+      <label>Add Photo (Optional)</label>
+      <div class="photo-box">
+        <strong>📷 Upload Photo</strong>
+        <span>JPG or PNG up to 10MB</span>
+      </div>
+
+      <label>Location</label>
+      <div class="location-buttons">
+        <button id="useMapBtn">Use Map</button>
+        <button id="addressBtn">Enter Address</button>
+      </div>
+
+      <div class="mini-map-box">
+        <span>Pin location using the main map</span>
+      </div>
+
+      <label class="checkbox-row">
+        <input type="checkbox" checked>
+        Notify me when this report is resolved
+      </label>
+
+      <label class="checkbox-row">
+        <input type="checkbox" checked>
+        Submit anonymously
+      </label>
+
+      <div class="info-box">
+        Your report will be anonymous to other users.
+      </div>
+
+      <div class="form-actions">
+        <button id="submitBtn">Submit Report</button>
+        <button class="cancel">Cancel</button>
+      </div>
+    </aside>
+  </main>
+
+  <section id="dashboardPanel" class="dashboard hidden">
+    <div class="dashboard-header">
+      <h2>Dispatcher Dashboard</h2>
+      <button id="closeDashboard">×</button>
+    </div>
+
+    <div class="tabs">
+      <button class="active">All Reports</button>
+      <button>Open</button>
+      <button>Under Review</button>
+      <button>Scheduled</button>
+      <button>Resolved</button>
+    </div>
+
+    <div id="reportList" class="report-list"></div>
+  </section>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
