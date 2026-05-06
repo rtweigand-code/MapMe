@@ -115,7 +115,7 @@ body {
 .legend {
   position: absolute;
 
-  left: 95px;
+  left: 18px;
   bottom: 24px;
 
   z-index: 100;
@@ -159,6 +159,12 @@ body {
 
 .resolved {
   background: #22c55e;
+}
+
+/* move basemap toggle above legend */
+
+.esri-ui-bottom-left {
+  bottom: 95px !important;
 }
 
 /* floating report button */
@@ -642,10 +648,6 @@ body {
     width: auto;
 
     max-width: none;
-  }
-
-  .esri-ui-bottom-left {
-    bottom: 95px !important;
   }
 
 }
