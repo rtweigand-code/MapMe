@@ -73,7 +73,7 @@ require([
 
           symbol: {
             type: "simple-marker",
-            color: "#f97316",
+            color: "#ef4444",
             size: 11,
 
             outline: {
