@@ -644,10 +644,8 @@ body {
     max-width: none;
   }
 
-  .esri-basemap-toggle {
-    position: absolute !important;
-    left: 16px !important;
-    bottom: 85px !important;
+  .esri-ui-bottom-left {
+    bottom: 95px !important;
   }
   
 }
