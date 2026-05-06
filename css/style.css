@@ -122,14 +122,16 @@ body {
 
   background: white;
 
-  padding: 12px 15px;
+  padding: 14px 18px;
 
-  border-radius: 8px;
+  border-radius: 10px;
 
   display: flex;
-  gap: 16px;
+  gap: 18px;
 
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+
+  border: 2px solid #003b64;
 
   font-size: 14px;
 }
@@ -146,7 +148,7 @@ body {
 }
 
 .open {
-  background: #f97316;
+  background: #ef4444;
 }
 
 .review {
@@ -161,10 +163,15 @@ body {
   background: #22c55e;
 }
 
-/* move basemap toggle above legend */
+/* basemap button */
 
-.esri-ui-bottom-left {
-  bottom: 77px !important;
+#basemapToggleDiv {
+  position: absolute;
+
+  left: 18px;
+  bottom: 78px;
+
+  z-index: 100;
 }
 
 /* floating report button */
