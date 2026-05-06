@@ -6,13 +6,16 @@ require([
   "esri/widgets/Search",
   "esri/layers/FeatureLayer",
   "esri/layers/GraphicsLayer",
-  "esri/Graphic"
+  "esri/Graphic",
+  "esri/widgets/BasemapToggle",
+  "esri/geometry/geometryEngine"
 ], function(
   esriConfig,
   Map,
   MapView,
   Locate,
   Search,
+  BasemapToggle,
   FeatureLayer,
   GraphicsLayer,
   Graphic
@@ -135,6 +138,38 @@ require([
 
   map.add(reportsLayer);
 
+  // madison city boundary
+  const cityLimitLayer = new FeatureLayer({
+
+    portalItem: {
+      id: "db89adb17d414649a71c0f29ea73e5bf"
+    },
+
+    layerId: 6,
+
+    renderer: {
+
+      type: "simple",
+
+      symbol: {
+
+        type: "simple-fill",
+
+        color: [0, 59, 100, 0.03],
+
+        outline: {
+          color: "#003b64",
+          width: 2
+        }
+
+      }
+
+    }
+
+  });
+
+  map.add(cityLimitLayer);
+
   map.add(pinLayer);
 
   // view
@@ -157,6 +192,14 @@ require([
 
   view.ui.add(locate, "top-left");
 
+  // imagery toggle
+  const basemapToggle = new BasemapToggle({
+    view: view,
+    nextBasemap: "hybrid"
+  });
+
+  view.ui.add(basemapToggle, "bottom-left");
+  
   // search widget
   const search = new Search({
 
