@@ -164,7 +164,7 @@ body {
 /* move basemap toggle above legend */
 
 .esri-ui-bottom-left {
-  bottom: 77px !important;
+  bottom: 65px !important;
 }
 
 /* floating report button */
