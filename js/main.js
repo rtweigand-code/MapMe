@@ -417,6 +417,40 @@ require([
           </option>
         </select>
 
+        <label>Department</label>
+
+        <select
+          class="department-select"
+          data-id="${attrs[objectIdField]}"
+        >
+          
+          <option value="review_required">
+            Review Required
+          </option>
+
+          <option value="engineering">
+            Engineering
+          </option>
+
+          <option value="parks">
+            Parks
+          </option>
+
+          <option value="traffic_engineering">
+            Traffic Engineering
+          </option>
+
+          <option value="streets_urban_forestry">
+            Streets & Urban Forestry
+          </option>
+
+          <option value="water_utility">
+            Water Utility
+          </option>
+
+        </select>
+
+      
         <button
           class="save-report"
           data-id="${attrs[objectIdField]}"
