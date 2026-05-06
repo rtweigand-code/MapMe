@@ -246,21 +246,31 @@ require([
     }
 
     // city limit check
-    if (
-      cityBoundaryGeometry &&
-      !geometryEngine.contains(
-        cityBoundaryGeometry,
-        selectedPoint
-      )
-    ) {
+    cityLimitLayer.queryFeatureCount({
+      geometry: selectedPoint,
+      spatialRelationship: "intersects",
+      where: "1=1"
+    })
 
-      alert(
-        "Reports must be placed inside Madison city limits."
+    .then(function(count) {
+
+      if (count === 0) {
+
+        alert(
+          "Reports must be placed inside Madison city limits."
+        );
+
+        return;
+      }
+
+      addReportToAgol(
+        category,
+        description,
+        address,
+        photoFile
       );
 
-      return;
-    
-    }
+    });
 
     const newFeature = new Graphic({
       geometry: selectedPoint,
