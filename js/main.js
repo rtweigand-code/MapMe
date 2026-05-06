@@ -4,11 +4,10 @@ require([
   "esri/views/MapView",
   "esri/widgets/Locate",
   "esri/widgets/Search",
+  "esri/widgets/BasemapToggle",
   "esri/layers/FeatureLayer",
   "esri/layers/GraphicsLayer",
-  "esri/Graphic",
-  "esri/widgets/BasemapToggle",
-  "esri/geometry/geometryEngine"
+  "esri/Graphic"
 ], function(
   esriConfig,
   Map,
@@ -29,9 +28,7 @@ require([
     "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/MapMe_Issue_Reports/FeatureServer/0";
 
   let selectedPoint = null;
-
   let currentFilter = "all";
-
   let objectIdField = "OBJECTID";
 
   // map setup
@@ -44,15 +41,11 @@ require([
 
   // report layer
   const reportsLayer = new FeatureLayer({
-
     url: reportsUrl,
-
     outFields: ["*"],
 
     popupTemplate: {
-
       title: "{category}",
-
       content: `
         <b>Status:</b> {status}<br>
         <b>Priority:</b> {priority}<br>
@@ -64,21 +57,16 @@ require([
 
     // status colors
     renderer: {
-
       type: "unique-value",
-
       field: "status",
 
       uniqueValueInfos: [
-
         {
           value: "open",
-
           symbol: {
             type: "simple-marker",
             color: "#ef4444",
             size: 11,
-
             outline: {
               color: "white",
               width: 1
@@ -88,12 +76,10 @@ require([
 
         {
           value: "under_review",
-
           symbol: {
             type: "simple-marker",
             color: "#facc15",
             size: 11,
-
             outline: {
               color: "white",
               width: 1
@@ -103,12 +89,10 @@ require([
 
         {
           value: "scheduled",
-
           symbol: {
             type: "simple-marker",
             color: "#2563eb",
             size: 11,
-
             outline: {
               color: "white",
               width: 1
@@ -118,71 +102,53 @@ require([
 
         {
           value: "resolved",
-
           symbol: {
             type: "simple-marker",
             color: "#22c55e",
             size: 11,
-
             outline: {
               color: "white",
               width: 1
             }
           }
         }
-
       ]
     }
-
   });
 
-  map.add(reportsLayer);
-
-  // madison city boundary
+  // Madison city boundary
   const cityLimitLayer = new FeatureLayer({
-
     portalItem: {
       id: "db89adb17d414649a71c0f29ea73e5bf"
     },
 
     layerId: 6,
 
+    title: "Madison City Boundary",
+
     renderer: {
-
       type: "simple",
-
       symbol: {
-
         type: "simple-fill",
-
         color: [0, 59, 100, 0.03],
-
         outline: {
           color: "#003b64",
           width: 2
         }
-
       }
-
     }
-
   });
 
   map.add(cityLimitLayer);
-
+  map.add(reportsLayer);
   map.add(pinLayer);
 
   // view
   const view = new MapView({
-
     container: "viewDiv",
-
     map: map,
-
     center: [-89.4012, 43.0731],
-
     zoom: 13
-
   });
 
   // locate button
@@ -199,54 +165,38 @@ require([
   });
 
   view.ui.add(basemapToggle, "bottom-left");
-  
+
   // search widget
   const search = new Search({
-
     view: view,
-
     container: "searchContainer"
-
   });
 
   // store selected map point
   view.on("click", function(event) {
-
     selectedPoint = event.mapPoint;
-
     drawSelectedPoint();
-
   });
 
   // selected point symbol
   function drawSelectedPoint() {
-
     pinLayer.removeAll();
 
     const graphic = new Graphic({
-
       geometry: selectedPoint,
-
       symbol: {
-
         type: "simple-marker",
-
         color: "#003b64",
-
         size: 14,
-
         outline: {
           color: "white",
           width: 2
         }
-
       }
-
     });
 
     pinLayer.add(graphic);
 
-    // update location text
     document.getElementById("selectedLocationText").innerHTML =
       `
       Pin selected at:
@@ -254,12 +204,10 @@ require([
       ${selectedPoint.latitude.toFixed(5)},
       ${selectedPoint.longitude.toFixed(5)}
       `;
-
   }
 
   // submit report
   function submitReport() {
-
     const category =
       document.getElementById("category").value;
 
@@ -272,9 +220,7 @@ require([
     const photoFile =
       document.getElementById("photoInput").files[0];
 
-    // basic validation
     if (!category || !description || !selectedPoint) {
-
       alert(
         "Please complete the report form and place a pin on the map."
       );
@@ -282,87 +228,57 @@ require([
       return;
     }
 
-    // feature to add
     const newFeature = new Graphic({
-
       geometry: selectedPoint,
-
       attributes: {
-
         category: category,
-
         description: description,
-
         address: address,
-
         status: "open",
-
         priority: "medium",
-
         department: "review_required"
-
       }
-
     });
 
-    // add to AGOL
     reportsLayer.applyEdits({
-
       addFeatures: [newFeature]
-
     })
 
     .then(function(result) {
-
       const addResult =
         result.addFeatureResults[0];
 
       if (!addResult || addResult.error) {
-
         alert("Could not submit report.");
-
         console.log(addResult.error);
-
         return;
       }
 
-      // photo attachment
       if (photoFile) {
-
         uploadAttachment(
           addResult.objectId,
           photoFile
         );
-
       }
 
       reportsLayer.refresh();
-
       loadReports();
-
       clearForm();
 
       alert("Report submitted.");
-
     })
 
     .catch(function(error) {
-
       console.log(error);
-
       alert("Something went wrong.");
-
     });
-
   }
 
   // upload photo
   function uploadAttachment(objectId, file) {
-
     const formData = new FormData();
 
     formData.append("attachment", file);
-
     formData.append("f", "json");
 
     fetch(
@@ -374,71 +290,50 @@ require([
     )
 
     .then(function(response) {
-
       return response.json();
-
     })
 
     .then(function(data) {
-
       console.log("Attachment uploaded");
-
     })
 
     .catch(function(error) {
-
       console.log(error);
-
     });
-
   }
 
   // load reports for dashboard
   function loadReports() {
-
     let whereClause = "1=1";
 
     if (currentFilter !== "all") {
-
       whereClause =
         `status='${currentFilter}'`;
-
     }
 
     reportsLayer.queryFeatures({
-
       where: whereClause,
-
       outFields: ["*"],
-
       returnGeometry: false,
-
       orderByFields: ["CreationDate DESC"],
-
       num: 25
-
     })
 
     .then(function(results) {
-
       renderDashboard(
         results.features
       );
-
     });
-
   }
 
   // dashboard cards
   function renderDashboard(features) {
-
     const reportList =
       document.getElementById("reportList");
 
     reportList.innerHTML = "";
 
     features.forEach(function(feature) {
-
       const attrs =
         feature.attributes;
 
@@ -449,7 +344,6 @@ require([
         "report-card";
 
       card.innerHTML = `
-
         <h3>${formatLabel(attrs.category)}</h3>
 
         <p>
@@ -472,7 +366,6 @@ require([
           class="status-select"
           data-id="${attrs[objectIdField]}"
         >
-
           <option value="open">
             Open
           </option>
@@ -488,7 +381,6 @@ require([
           <option value="resolved">
             Resolved
           </option>
-
         </select>
 
         <button
@@ -497,75 +389,54 @@ require([
         >
           Save Updates
         </button>
-
       `;
 
       reportList.appendChild(card);
 
-      // set selected value
       const select =
         card.querySelector(".status-select");
 
       select.value =
         attrs.status;
-
     });
-
   }
 
   // update report status
   function updateReport(objectId, status) {
-
     const updateFeature =
       new Graphic({
-
         attributes: {
-
           [objectIdField]:
             Number(objectId),
 
           status: status
-
         }
-
       });
 
     reportsLayer.applyEdits({
-
       updateFeatures: [updateFeature]
-
     })
 
     .then(function() {
-
       reportsLayer.refresh();
-
       loadReports();
-
     });
-
   }
 
   // clean labels
   function formatLabel(value) {
-
     if (!value) return "";
 
     return value
       .replaceAll("_", " ")
       .replace(/\b\w/g, c => c.toUpperCase());
-
   }
 
   // clear form
   function clearForm() {
-
     document.getElementById("category").value = "";
-
     document.getElementById("description").value = "";
-
     document.getElementById("address").value = "";
-
     document.getElementById("photoInput").value = "";
 
     document.getElementById("selectedLocationText").innerHTML =
@@ -574,7 +445,6 @@ require([
     pinLayer.removeAll();
 
     selectedPoint = null;
-
   }
 
   // report drawer
@@ -583,16 +453,12 @@ require([
 
   document.getElementById("openReportBtn")
     .onclick = function() {
-
       reportDrawer.classList.add("open");
-
     };
 
   document.getElementById("closeDrawerBtn")
     .onclick = function() {
-
       reportDrawer.classList.remove("open");
-
     };
 
   // menu drawer
@@ -601,35 +467,27 @@ require([
 
   document.getElementById("menuBtn")
     .onclick = function() {
-
       menuPanel.classList.remove("hidden");
-
     };
 
   document.getElementById("closeMenuBtn")
     .onclick = function() {
-
       menuPanel.classList.add("hidden");
-
     };
 
   // dashboard
   document.getElementById("dashboardBtn")
     .onclick = function() {
-
       document.getElementById("dashboardPanel")
         .classList.remove("hidden");
 
       loadReports();
-
     };
 
   document.getElementById("closeDashboard")
     .onclick = function() {
-
       document.getElementById("dashboardPanel")
         .classList.add("hidden");
-
     };
 
   // submit report
@@ -643,7 +501,6 @@ require([
   // clear pin
   document.getElementById("clearLocationBtn")
     .onclick = function() {
-
       pinLayer.removeAll();
 
       selectedPoint = null;
@@ -651,20 +508,15 @@ require([
       document.getElementById("selectedLocationText")
         .innerHTML =
         "Click the map to place a report pin";
-
     };
 
   // filters
   document.querySelectorAll(".filter-tab")
     .forEach(function(button) {
-
       button.onclick = function() {
-
         document.querySelectorAll(".filter-tab")
           .forEach(function(tab) {
-
             tab.classList.remove("active");
-
           });
 
         button.classList.add("active");
@@ -673,19 +525,15 @@ require([
           button.dataset.status;
 
         loadReports();
-
       };
-
     });
 
   // save report buttons
   document.getElementById("reportList")
     .onclick = function(event) {
-
       if (
         event.target.classList.contains("save-report")
       ) {
-
         const objectId =
           event.target.dataset.id;
 
@@ -698,18 +546,14 @@ require([
           objectId,
           status
         );
-
       }
-
     };
 
   // get object id field
   reportsLayer.load()
     .then(function() {
-
       objectIdField =
         reportsLayer.objectIdField;
-
     });
 
 });
