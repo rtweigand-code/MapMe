@@ -254,10 +254,6 @@ require([
 
         status: "open",
 
-        priority: "medium",
-
-        department: "review_required"
-
       }
 
     });
