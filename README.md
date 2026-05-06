@@ -7,7 +7,7 @@ MapMe is a mobile-first community reporting web application designed to allow us
 
 The goal of the project was to create something that felt practical and usable in a real-world municipal workflow rather than just a simple class demo. The application allows users to submit geolocated reports related to issues such as roadway maintenance, sidewalk concerns, illegal dumping, vegetation issues, damaged infrastructure, and other public service requests. Submitted reports are stored in ArcGIS Online and can be reviewed through a dispatcher-style dashboard interface.
 
-This project was created strictly for educational purposes as part of a university course project and has no affiliation with, endorsement from, or connection to the City of Madison or any city department. Any references to Madison, city workflows, departments, or municipal operations are used only as part of the project scenario and application design.
+This project was created for educational purposes as part of a course project and has no direct affiliation with City of Madison or any city department. Any references to Madison, city workflows, departments, or municipal operations are used only as part of the project scenario and application design.
 
 ---
 
