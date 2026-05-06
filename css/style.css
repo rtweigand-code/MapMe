@@ -647,5 +647,9 @@ body {
   .esri-ui-bottom-left {
     bottom: 95px !important;
   }
+
+  .legend {
+    left: 95px;
+  }
   
 }
