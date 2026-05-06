@@ -130,10 +130,10 @@ require([
       type: "simple",
       symbol: {
         type: "simple-fill",
-        color: [0, 59, 100, 0.03],
+        color: [0, 59, 100, 0.01],
         outline: {
-          color: "#003b64",
-          width: 2
+          color: [0, 59, 100, 0.65],
+          width: 1.5
         }
       }
     }
