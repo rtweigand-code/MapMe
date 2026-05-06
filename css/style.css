@@ -645,7 +645,9 @@ body {
   }
 
   .esri-basemap-toggle {
-  margin-bottom: 105px;
+    position: absolute !important;
+    left: 16px !important;
+    bottom: 85px !important;
   }
   
 }
