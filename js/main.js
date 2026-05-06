@@ -7,7 +7,8 @@ require([
   "esri/widgets/BasemapToggle",
   "esri/layers/FeatureLayer",
   "esri/layers/GraphicsLayer",
-  "esri/Graphic"
+  "esri/Graphic",
+  "esri/geometry/geometryEngine"
 ], function(
   esriConfig,
   Map,
@@ -17,7 +18,8 @@ require([
   BasemapToggle,
   FeatureLayer,
   GraphicsLayer,
-  Graphic
+  Graphic,
+  geometryEngine
 ) {
 
   // ArcGIS API key
@@ -30,6 +32,7 @@ require([
   let selectedPoint = null;
   let currentFilter = "all";
   let objectIdField = "OBJECTID";
+  let cityBoundaryGeometry = null;
 
   // map setup
   const map = new Map({
@@ -140,6 +143,20 @@ require([
   });
 
   map.add(cityLimitLayer);
+
+  cityLimitLayer.queryFeatures({
+    where: "1=1",
+    returnGeometry: true,
+    outFields: ["*"]
+  })
+
+  .then(function(results) {
+
+    cityBoundaryGeometry =
+      results.features[0].geometry;
+
+  });
+
   map.add(reportsLayer);
   map.add(pinLayer);
 
@@ -226,6 +243,23 @@ require([
       );
 
       return;
+    }
+
+    // city limit check
+    if (
+      cityBoundaryGeometry &&
+      !geometryEngine.contains(
+        cityBoundaryGeometry,
+        selectedPoint
+      )
+    ) {
+
+      alert(
+        "Reports must be placed inside Madison city limits."
+      );
+
+      return;
+    
     }
 
     const newFeature = new Graphic({
