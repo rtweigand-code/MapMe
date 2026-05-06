@@ -2,23 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <!-- mobile viewport -->
+  <meta
+    name="viewport"
+    content="initial-scale=1, maximum-scale=1, user-scalable=no"
+  />
 
   <title>MapMe | Madison Community Reporting</title>
 
   <!-- ArcGIS CSS -->
-  <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+  <link
+    rel="stylesheet"
+    href="https://js.arcgis.com/4.26/esri/themes/light/main.css"
+  >
 
-  <!-- custom styles -->
+  <!-- custom css -->
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- ArcGIS JS API -->
+  <!-- ArcGIS JS -->
   <script src="https://js.arcgis.com/4.26/"></script>
 </head>
 
 <body>
 
-  <!-- top header -->
+  <!-- top nav -->
   <header class="topbar">
 
     <div class="brand">
@@ -33,49 +41,120 @@
     </div>
 
     <div class="top-actions">
-      <button id="dashboardBtn">Dispatcher</button>
-      <button id="menuBtn">☰</button>
+
+      <button id="dashboardBtn">
+        Dispatcher
+      </button>
+
+      <button id="menuBtn">
+        ☰
+      </button>
+
     </div>
 
   </header>
 
-  <!-- main app -->
-  <main class="app-layout">
+  <!-- menu drawer -->
+  <aside id="menuPanel" class="menu-panel hidden">
 
-    <!-- map section -->
-    <section class="map-section">
+    <div class="menu-header">
 
-      <!-- search widget -->
-      <div id="searchContainer" class="search-row"></div>
+      <h2>MapMe</h2>
 
-      <!-- ArcGIS map -->
-      <div id="viewDiv"></div>
-
-      <!-- legend -->
-      <div class="legend">
-        <span><i class="dot open"></i> Open</span>
-        <span><i class="dot review"></i> Under Review</span>
-        <span><i class="dot scheduled"></i> Scheduled</span>
-        <span><i class="dot resolved"></i> Resolved</span>
-      </div>
-
-      <!-- mobile button -->
-      <button id="mobileReportBtn" class="floating-report">
-        + Report an Issue
+      <button id="closeMenuBtn">
+        ×
       </button>
 
-    </section>
+    </div>
 
-    <!-- report form -->
-    <aside class="report-panel" id="reportPanel">
+    <div class="menu-links">
+
+      <button class="menu-link">
+        About
+      </button>
+
+      <button class="menu-link">
+        Data & Sources
+      </button>
+
+      <button class="menu-link">
+        Madison Resources
+      </button>
+
+      <button class="menu-link">
+        Report Guidelines
+      </button>
+
+    </div>
+
+  </aside>
+
+  <!-- map -->
+  <main class="map-layout">
+
+    <!-- search bar -->
+    <div id="searchContainer" class="search-container"></div>
+
+    <!-- map -->
+    <div id="viewDiv"></div>
+
+    <!-- legend -->
+    <div class="legend">
+
+      <span>
+        <i class="dot open"></i>
+        Open
+      </span>
+
+      <span>
+        <i class="dot review"></i>
+        Under Review
+      </span>
+
+      <span>
+        <i class="dot scheduled"></i>
+        Scheduled
+      </span>
+
+      <span>
+        <i class="dot resolved"></i>
+        Resolved
+      </span>
+
+    </div>
+
+    <!-- report button -->
+    <button id="openReportBtn" class="report-fab">
+      + Report an Issue
+    </button>
+
+  </main>
+
+  <!-- report drawer -->
+  <aside id="reportDrawer" class="report-drawer">
+
+    <div class="drawer-header">
 
       <h2>Submit a Report</h2>
 
-      <label for="category">Category</label>
+      <button id="closeDrawerBtn">
+        ×
+      </button>
+
+    </div>
+
+    <!-- report form -->
+    <div class="drawer-content">
+
+      <label for="category">
+        Category
+      </label>
 
       <select id="category">
 
-        <option value="">Select a category</option>
+        <option value="">
+          -- Select Category --
+        </option>
 
         <option value="abandoned_property">
           Abandoned Property
@@ -127,14 +206,18 @@
 
       </select>
 
-      <label for="description">Description</label>
+      <label for="description">
+        Description
+      </label>
 
       <textarea
         id="description"
-        placeholder="Briefly describe the issue..."
+        placeholder="Describe the issue..."
       ></textarea>
 
-      <label for="address">Address or Nearby Location</label>
+      <label for="address">
+        Address or Nearby Location
+      </label>
 
       <input
         id="address"
@@ -142,7 +225,9 @@
         placeholder="Example: near James Madison Park"
       >
 
-      <label for="photoInput">Photo Optional</label>
+      <label for="photoInput">
+        Add Photo (Optional)
+      </label>
 
       <input
         id="photoInput"
@@ -151,13 +236,11 @@
       >
 
       <!-- location controls -->
-      <label>Location</label>
+      <label>
+        Location
+      </label>
 
       <div class="location-buttons">
-
-        <button id="useMapBtn">
-          Use Map
-        </button>
 
         <button id="clearLocationBtn">
           Clear Pin
@@ -166,7 +249,7 @@
       </div>
 
       <!-- selected point -->
-      <div class="mini-map-box">
+      <div class="location-box">
 
         <span id="selectedLocationText">
           Click the map to place a report pin
@@ -174,7 +257,7 @@
 
       </div>
 
-      <!-- info box -->
+      <!-- info -->
       <div class="info-box">
         Reports are submitted anonymously and reviewed through the dispatcher workflow.
       </div>
@@ -186,24 +269,26 @@
           Submit Report
         </button>
 
-        <button class="cancel" id="clearFormBtn">
+        <button id="clearFormBtn" class="cancel-btn">
           Clear
         </button>
 
       </div>
 
-    </aside>
+    </div>
 
-  </main>
+  </aside>
 
-  <!-- dispatcher panel -->
+  <!-- dispatcher dashboard -->
   <section id="dashboardPanel" class="dashboard hidden">
 
     <div class="dashboard-header">
 
       <h2>Dispatcher Dashboard</h2>
 
-      <button id="closeDashboard">×</button>
+      <button id="closeDashboard">
+        ×
+      </button>
 
     </div>
 
@@ -232,12 +317,12 @@
 
     </div>
 
-    <!-- report cards -->
+    <!-- cards -->
     <div id="reportList" class="report-list"></div>
 
   </section>
 
-  <!-- main js -->
+  <!-- js -->
   <script src="js/main.js"></script>
 
 </body>
