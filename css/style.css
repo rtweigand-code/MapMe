@@ -115,8 +115,8 @@ body {
 .legend {
   position: absolute;
 
-  left: 18px;
-  bottom: 18px;
+  left: 95px;
+  bottom: 24px;
 
   z-index: 100;
 
@@ -648,8 +648,4 @@ body {
     bottom: 95px !important;
   }
 
-  .legend {
-    left: 95px;
-  }
-  
 }
